@@ -5,7 +5,6 @@ import org.springframework.validation.FieldError;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class InvalidInputException extends IllegalArgumentException {
