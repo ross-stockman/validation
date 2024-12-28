@@ -13,6 +13,9 @@ public class InvalidInputException extends IllegalArgumentException {
         super();
         this.violations = new HashSet<>(violations);
     }
+    static InvalidInputException violations(Collection<Violation> violations) {
+        return new InvalidInputException(violations);
+    }
     static InvalidInputException fieldErrors(Collection<FieldError> fieldErrors) {
         return new InvalidInputException(fieldErrors.stream()
                 .map(fieldError -> new Violation(fieldError))

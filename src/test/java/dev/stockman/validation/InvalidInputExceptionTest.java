@@ -127,4 +127,49 @@ class InvalidInputExceptionTest {
         assertEquals(2, exception.getViolations().size(), "Expected two violations");
     }
 
+    @Test
+    void violations_withEmptyViolationsCollection_returnsEmptyViolations() {
+        // Arrange
+        Collection<Violation> violations = List.of();
+
+        // Act
+        InvalidInputException exception = InvalidInputException.violations(violations);
+
+        // Assert
+        assertNotNull(exception);
+        assertNotNull(exception.getViolations());
+        assertEquals(0, exception.getViolations().size(), "Expected no violations");
+    }
+
+    @Test
+    void violations_withSingleViolation_createsSingleViolation() {
+        // Arrange
+        Violation violation = new Violation("fieldName", "invalidValue", "Message");
+        Collection<Violation> violations = List.of(violation);
+
+        // Act
+        InvalidInputException exception = InvalidInputException.violations(violations);
+
+        // Assert
+        assertNotNull(exception);
+        assertNotNull(exception.getViolations());
+        assertEquals(1, exception.getViolations().size(), "Expected one violation");
+        assertEquals("fieldName", exception.getViolations().iterator().next().property(), "Field name does not match");
+    }
+
+    @Test
+    void violations_withMultipleViolations_createsCorrectNumberOfViolations() {
+        // Arrange
+        Violation violation1 = new Violation("fieldName1", "invalidValue1", "Message1");
+        Violation violation2 = new Violation("fieldName2", "invalidValue2", "Message2");
+        Collection<Violation> violations = List.of(violation1, violation2);
+
+        // Act
+        InvalidInputException exception = InvalidInputException.violations(violations);
+
+        // Assert
+        assertNotNull(exception);
+        assertNotNull(exception.getViolations());
+        assertEquals(2, exception.getViolations().size(), "Expected two violations");
+    }
 }
