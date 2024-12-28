@@ -21,6 +21,51 @@ class InvalidInputExceptionTest {
      */
 
     @Test
+    void getMessageWithViolations_whenNoViolations_returnsCorrectMessage() {
+        // Arrange
+        Collection<Violation> violations = List.of();
+        InvalidInputException exception = InvalidInputException.violations(violations);
+
+        // Act
+        String message = exception.getMessageWithViolations();
+
+        // Assert
+        assertNotNull(message);
+        assertEquals("Validation Failed: Invalid input detected with 0 violation(s). violations=[]", message);
+    }
+
+    @Test
+    void getMessageWithViolations_whenSingleViolation_returnsCorrectMessage() {
+        // Arrange
+        Violation violation = new Violation("fieldName1", "invalidValue1", "Message1");
+        Collection<Violation> violations = List.of(violation);
+        InvalidInputException exception = InvalidInputException.violations(violations);
+
+        // Act
+        String message = exception.getMessageWithViolations();
+
+        // Assert
+        assertNotNull(message);
+        assertEquals("Validation Failed: Invalid input detected with 1 violation(s). violations=[Violation[property=fieldName1, invalidValue=invalidValue1, message=Message1]]", message);
+    }
+
+    @Test
+    void getMessageWithViolations_whenMultipleViolations_returnsCorrectMessage() {
+        // Arrange
+        Violation violation1 = new Violation("fieldName1", "invalidValue1", "Message1");
+        Violation violation2 = new Violation("fieldName2", "invalidValue2", "Message2");
+        Collection<Violation> violations = List.of(violation1, violation2);
+        InvalidInputException exception = InvalidInputException.violations(violations);
+
+        // Act
+        String message = exception.getMessageWithViolations();
+
+        // Assert
+        assertNotNull(message);
+        assertEquals("Validation Failed: Invalid input detected with 2 violation(s). violations=[Violation[property=fieldName2, invalidValue=invalidValue2, message=Message2], Violation[property=fieldName1, invalidValue=invalidValue1, message=Message1]]", message);
+    }
+
+    @Test
     void fieldErrors_withEmptyFieldErrorsCollection_returnsEmptyViolations() {
         // Arrange
         Collection<FieldError> fieldErrors = List.of();

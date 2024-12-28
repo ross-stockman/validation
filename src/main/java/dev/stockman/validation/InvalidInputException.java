@@ -5,12 +5,13 @@ import org.springframework.validation.FieldError;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class InvalidInputException extends IllegalArgumentException {
     private final Collection<Violation> violations;
     private InvalidInputException(Collection<Violation> violations) {
-        super();
+        super("Validation Failed: Invalid input detected with %d violation(s). Please examine the violations by calling getViolations() on this exception.".formatted(violations.size()));
         this.violations = new HashSet<>(violations);
     }
     static InvalidInputException violations(Collection<Violation> violations) {
@@ -28,5 +29,8 @@ public class InvalidInputException extends IllegalArgumentException {
     }
     public Collection<Violation> getViolations() {
         return new HashSet<>(this.violations);
+    }
+    public String getMessageWithViolations() {
+        return "Validation Failed: Invalid input detected with %d violation(s). violations=%s".formatted(violations.size(), violations);
     }
 }
