@@ -18,12 +18,12 @@ public class InvalidInputException extends IllegalArgumentException {
     }
     static InvalidInputException fieldErrors(Collection<FieldError> fieldErrors) {
         return new InvalidInputException(fieldErrors.stream()
-                .map(fieldError -> new Violation(fieldError))
+                .map(Violation::new)
                 .collect(Collectors.toSet()));
     }
     static InvalidInputException constraintViolations(Collection<ConstraintViolation<Object>> constraintViolations) {
         return new InvalidInputException(constraintViolations.stream()
-                .map(constraintViolation -> new Violation(constraintViolation))
+                .map(Violation::new)
                 .collect(Collectors.toSet()));
     }
     public Collection<Violation> getViolations() {

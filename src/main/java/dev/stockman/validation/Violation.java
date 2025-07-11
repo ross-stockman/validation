@@ -1,6 +1,7 @@
 package dev.stockman.validation;
 
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Path;
 import org.springframework.validation.FieldError;
 
 import java.util.Optional;
@@ -8,7 +9,7 @@ import java.util.Optional;
 public record Violation(String property, Object invalidValue, String message) {
     public Violation(ConstraintViolation<Object> constraintViolation) {
         this(
-                Optional.ofNullable(constraintViolation.getPropertyPath()).map(path -> path.toString()).orElse(null),
+                Optional.ofNullable(constraintViolation.getPropertyPath()).map(Path::toString).orElse(null),
                 constraintViolation.getInvalidValue(),
                 constraintViolation.getMessage()
         );
